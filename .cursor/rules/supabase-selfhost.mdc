@@ -1,0 +1,12 @@
+---
+description: Operate BlitzHash self-hosted Supabase kit (setup, doctor, backups, Edge Functions Admin, health UIs)
+alwaysApply: true
+---
+
+Follow AGENTS.md in this repo.
+
+- First-time: `./setup.sh -y`
+- Health: `./bin/blitzhash-supabase doctor`
+- Edge Functions: Studio cannot manage them on self-hosted — use http://127.0.0.1:9100 or files under `supabase-project/volumes/functions/`
+- Never commit secrets; never put service_role keys in frontend
+- Not affiliated with Supabase

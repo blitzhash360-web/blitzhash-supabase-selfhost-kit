@@ -1,0 +1,30 @@
+{
+  "name": "blitzhash-supabase-selfhost-kit",
+  "version": "1.0.0",
+  "private": true,
+  "description": "One-command self-hosted Supabase (official docker) + Edge Functions admin + health dashboards + AI IDE rules. Not affiliated with Supabase.",
+  "license": "MIT",
+  "type": "module",
+  "engines": { "node": ">=18.17" },
+  "scripts": {
+    "test": "node --test test/*.test.mjs services/functions-admin/test/*.test.mjs",
+    "validate": "./scripts/ci-compose-validate.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blitzhash360-web/blitzhash-supabase-selfhost-kit.git"
+  },
+  "homepage": "https://github.com/blitzhash360-web/blitzhash-supabase-selfhost-kit",
+  "keywords": [
+    "supabase",
+    "self-hosted",
+    "docker",
+    "edge-functions",
+    "cursor",
+    "claude",
+    "agents",
+    "glances",
+    "dozzle",
+    "blitzhash"
+  ]
+}

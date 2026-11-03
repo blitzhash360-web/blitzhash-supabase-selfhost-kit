@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+set -euo pipefail
+KIT_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+# shellcheck source=../scripts/lib/common.sh
+source "$KIT_ROOT/scripts/lib/common.sh"
+
+cmd="${1:-help}"
+shift || true
+
+case "$cmd" in
+  up|start)
+    check_docker
+    ensure_project
+    if [[ -f "$PROJECT_DIR/run.sh" ]]; then in_project sh run.sh start
+    else in_project docker compose up -d --wait || in_project docker compose up -d
+    fi
+    ;;
+  down|stop)
+    check_docker
+    ensure_project
+    if [[ -f "$PROJECT_DIR/run.sh" ]]; then in_project sh run.sh stop
+    else in_project docker compose down
+    fi
+    ;;
+  doctor)
+    exec "$KIT_ROOT/scripts/doctor.sh" "$@"
+    ;;
+  backup)
+    exec "$KIT_ROOT/scripts/backup.sh" "$@"
+    ;;
+  restore)
+    exec "$KIT_ROOT/scripts/restore.sh" "$@"
+    ;;
+  update)
+    exec "$KIT_ROOT/scripts/update.sh" "$@"
+    ;;
+  secrets)
+    ensure_project
+    if [[ -f "$PROJECT_DIR/run.sh" ]]; then in_project sh run.sh secrets
+    else
+      echo "Open $PROJECT_DIR/.env (never commit it)."
+    fi
+    ;;
+  help|-h|--help)
+    cat <<H
+blitzhash-supabase — manage a kit-installed self-hosted Supabase
+
+  up / start     Start the stack
+  down / stop    Stop the stack
+  doctor         Health check (compose ps + kit endpoints)
+  backup         pg_dump into ./supabase-project/backups/
+  restore <file> Restore a dump (destructive)
+  update         Re-fetch upstream pin + recreate
+  secrets        Print key credentials (via upstream run.sh)
+H
+    ;;
+  *) die "unknown command: $cmd (try help)" ;;
+esac

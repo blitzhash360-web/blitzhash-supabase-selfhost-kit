@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Health dashboard link</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="top">
+    <div class="panel" style="max-width:40rem">
+      <h1>Host &amp; container health</h1>
+      <p class="sub">The kit starts <strong>Glances</strong> (host CPU/RAM/disk + containers) and <strong>Dozzle</strong> (live container logs) by default. Both sit behind their own auth and bind to localhost unless you change the overlay.</p>
+      <ul>
+        <li>Glances: <code>http://127.0.0.1:61208</code></li>
+        <li>Dozzle: <code>http://127.0.0.1:8080</code></li>
+      </ul>
+      <p class="hint">Credentials match your Studio dashboard user/password unless you override them. See <code>docs/HEALTH.md</code>.</p>
+      <p><a class="btn ghost" href="/">← Back to Functions Admin</a></p>
+    </div>
+  </main>
+</body>
+</html>

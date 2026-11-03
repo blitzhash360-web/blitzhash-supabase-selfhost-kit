@@ -1,0 +1,13 @@
+{
+  "name": "blitzhash-functions-admin",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Edge Functions admin UI for self-hosted Supabase (BlitzHash kit). Not affiliated with Supabase.",
+  "license": "MIT",
+  "engines": { "node": ">=18.17" },
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test test/*.test.mjs"
+  }
+}

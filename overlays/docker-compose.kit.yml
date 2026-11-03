@@ -1,0 +1,71 @@
+# BlitzHash kit overlay — Edge Functions Admin + health stack (Glances + Dozzle).
+# Applied by setup.sh into supabase-project/ as docker-compose.kit.yml and added
+# to COMPOSE_FILE. Not affiliated with Supabase.
+#
+# Security:
+# - Published ports default to 127.0.0.1 only.
+# - Auth reuses Studio DASHBOARD_USERNAME / DASHBOARD_PASSWORD.
+# - docker.sock: glances/dozzle are :ro; functions-admin needs RW to restart
+#   supabase-edge-functions on Deploy. Treat that socket like root.
+
+services:
+
+  # Load function secrets into edge-runtime (file managed by Functions Admin).
+  # Values are never committed; create empty file in setup.sh.
+  functions:
+    env_file:
+      - path: ./volumes/functions/.env.functions
+        required: false
+
+  functions-admin:
+    container_name: blitzhash-functions-admin
+    image: ${FUNCTIONS_ADMIN_IMAGE:-blitzhash-functions-admin:local}
+    build:
+      context: ./kit/functions-admin
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - functions
+    ports:
+      - "${FUNCTIONS_ADMIN_BIND:-127.0.0.1}:${FUNCTIONS_ADMIN_PORT:-9100}:9100"
+    environment:
+      FUNCTIONS_ADMIN_PORT: "9100"
+      FUNCTIONS_DIR: /home/deno/functions
+      FUNCTIONS_SECRETS_FILE: /home/deno/functions/.env.functions
+      DOCKER_SOCK: /var/run/docker.sock
+      EDGE_FUNCTIONS_CONTAINER: supabase-edge-functions
+      DASHBOARD_USERNAME: ${DASHBOARD_USERNAME:-supabase}
+      DASHBOARD_PASSWORD: ${DASHBOARD_PASSWORD}
+      FUNCTIONS_ADMIN_USERNAME: ${FUNCTIONS_ADMIN_USERNAME:-}
+      FUNCTIONS_ADMIN_PASSWORD: ${FUNCTIONS_ADMIN_PASSWORD:-}
+    volumes:
+      - ./volumes/functions:/home/deno/functions:z
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  glances:
+    container_name: blitzhash-glances
+    image: nicolargo/glances:latest-full
+    restart: unless-stopped
+    pid: host
+    ports:
+      - "${GLANCES_BIND:-127.0.0.1}:${GLANCES_PORT:-61208}:61208"
+    environment:
+      GLANCES_OPT: "-w -C /etc/glances/glances.conf"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /:/host:ro
+      - ./volumes/kit/glances.conf:/etc/glances/glances.conf:ro
+
+  dozzle:
+    container_name: blitzhash-dozzle
+    image: amir20/dozzle:latest
+    restart: unless-stopped
+    ports:
+      - "${DOZZLE_BIND:-127.0.0.1}:${DOZZLE_PORT:-8080}:8080"
+    environment:
+      DOZZLE_AUTH_PROVIDER: simple
+      DOZZLE_USERNAME: ${DASHBOARD_USERNAME:-supabase}
+      DOZZLE_PASSWORD: ${DASHBOARD_PASSWORD}
+      DOZZLE_NO_ANALYTICS: "true"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro

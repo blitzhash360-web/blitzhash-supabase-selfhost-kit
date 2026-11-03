@@ -1,0 +1,13 @@
+# Optional: route /functions-admin* to the kit admin UI when you terminate TLS
+# with the official docker-compose.caddy.yml. Paste inside your site block and
+# point FUNCTIONS_ADMIN_UPSTREAM at the functions-admin container.
+#
+# Studio cannot add a first-party nav item for this without forking Studio.
+# Options that DO work without forking:
+#   1) Open http://127.0.0.1:9100 (default bind) — documented in Studio note below
+#   2) This Caddy path so the same HTTPS domain serves /functions-admin
+#   3) Bookmark / pin the link yourself
+#
+# handle_path /functions-admin* {
+#     reverse_proxy functions-admin:9100
+# }

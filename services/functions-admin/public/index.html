@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Edge Functions Admin · BlitzHash</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/theme/material-darker.css" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="top">
+    <div>
+      <p class="eyebrow">BlitzHash · Self-Host Kit</p>
+      <h1>Edge Functions Admin</h1>
+      <p class="sub">Self-hosted Studio cannot create, edit, deploy, or manage secrets for Edge Functions. This companion UI does. Not affiliated with Supabase.</p>
+    </div>
+    <div class="actions">
+      <a class="btn ghost" href="/health-hint.html" title="Health dashboard">Health →</a>
+      <button id="btn-deploy" class="btn primary">Deploy / reload runtime</button>
+    </div>
+  </header>
+
+  <main class="grid">
+    <aside class="panel">
+      <div class="panel-h">
+        <h2>Functions</h2>
+        <button id="btn-new" class="btn small">+ New</button>
+      </div>
+      <ul id="fn-list" class="list"></ul>
+      <div class="panel-h" style="margin-top:1.25rem">
+        <h2>Secrets</h2>
+        <button id="btn-secret" class="btn small">+ Add</button>
+      </div>
+      <p class="hint">Stored in <code>.env.functions</code>. Values are masked. Never commit.</p>
+      <ul id="secret-list" class="list"></ul>
+    </aside>
+
+    <section class="panel editor-wrap">
+      <div class="panel-h">
+        <h2 id="editor-title">Select a function</h2>
+        <div class="row">
+          <button id="btn-save" class="btn" disabled>Save</button>
+          <button id="btn-delete" class="btn danger" disabled>Delete</button>
+        </div>
+      </div>
+      <textarea id="code"></textarea>
+      <p id="status" class="status"></p>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>Auth: same Studio dashboard credentials (or FUNCTIONS_ADMIN_*).</span>
+    <span>Built by <a href="https://blitzhash.com" target="_blank" rel="noopener">BlitzHash</a></span>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/lib/codemirror.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/codemirror@5.65.16/mode/javascript/javascript.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

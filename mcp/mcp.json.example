@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "supabase-selfhost-postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "POSTGRES_CONNECTION_STRING": "postgresql://postgres:${POSTGRES_PASSWORD}@127.0.0.1:5432/postgres"
+      }
+    },
+    "comment": "Prefer a read-only DB role in production. Substitute from supabase-project/.env — never commit real values. Point IDE MCP at this file's pattern. Optional: official Supabase MCP aimed at SUPABASE_PUBLIC_URL with the publishable key for schema exploration."
+  }
+}

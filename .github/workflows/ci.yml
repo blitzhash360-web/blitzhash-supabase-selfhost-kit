@@ -1,0 +1,33 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install shellcheck
+        run: sudo apt-get update && sudo apt-get install -y shellcheck
+      - name: ShellCheck
+        run: shellcheck -e SC1091,SC2034 -x setup.sh bin/blitzhash-supabase scripts/*.sh scripts/lib/common.sh
+      - name: Unit tests (JWT + functions-admin + overlay)
+        run: |
+          node --test test/*.test.mjs
+          node --test services/functions-admin/test/*.test.mjs
+      - name: Validate kit overlay / upstream pin
+        run: ./scripts/ci-compose-validate.sh
+      - name: No secrets committed
+        run: |
+          ! git ls-files | grep -E '(^|/)\.env($|\.)' | grep -v '^\.env\.example$'
+          ! git ls-files | grep -E '\.env\.functions$'

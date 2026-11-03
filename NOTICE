@@ -1,0 +1,19 @@
+BlitzHash Self-Host Supabase Kit
+Copyright (c) 2026 BlitzHash
+
+This project includes scripts that download and configure the official
+Supabase self-hosting Docker Compose setup from:
+
+  https://github.com/supabase/supabase/tree/master/docker
+
+That upstream Docker configuration and related scripts are licensed under the
+Apache License, Version 2.0. See:
+
+  https://www.apache.org/licenses/LICENSE-2.0
+
+When you run ./setup.sh, the official files are fetched into ./supabase-project/
+(gitignored). Keep their LICENSE/NOTICE files and do not rebrand upstream code.
+
+Supabase and related marks are trademarks of Supabase, Inc. This project is
+independent and is not affiliated with, endorsed by, or sponsored by Supabase, Inc.
+"for Supabase" only describes what the tools work with.

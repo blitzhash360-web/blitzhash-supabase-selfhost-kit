@@ -1,0 +1,20 @@
+Third-party components used by the BlitzHash kit overlay
+========================================================
+
+1) Glances — https://github.com/nicolargo/glances
+   License: LGPL-3.0-only
+   Used as the default host + container health Web UI (image: nicolargo/glances).
+
+2) Dozzle — https://github.com/amir20/dozzle
+   License: MIT
+   Used as the default live Docker logs viewer (image: amir20/dozzle).
+
+3) CodeMirror 5 — https://github.com/codemirror/codemirror5
+   License: MIT
+   Loaded from jsDelivr CDN in the Functions Admin browser UI only (not vendored).
+
+4) Official Supabase Docker Compose — https://github.com/supabase/supabase/tree/master/docker
+   License: Apache-2.0
+   Fetched at a pinned self-hosted tag by setup.sh into ./supabase-project/ (gitignored).
+
+BlitzHash's own code in this repository is MIT (see LICENSE / NOTICE).
