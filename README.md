@@ -24,6 +24,24 @@ cd blitzhash-supabase-selfhost-kit
 
 `setup.sh` checks Docker, **fetches the official** [`supabase/supabase` `docker/`](https://github.com/supabase/supabase/tree/master/docker) tree at a **pinned** tag (`self-hosted/v0.8.3` by default — Apache-2.0 upstream, credited in [NOTICE](NOTICE)), generates strong secrets (via upstream `generate-keys.sh` / `add-new-auth-keys.sh`), layers the BlitzHash kit overlay, and starts the stack.
 
+## Deploy (VPS / Docker host)
+
+This kit is **not** a single standalone `docker-compose.yml`. `./setup.sh` must run first: it sparse-clones the official [`supabase/supabase` `docker/`](https://github.com/supabase/supabase/tree/master/docker) tree at a pinned tag, generates secrets, copies the BlitzHash overlay (Functions Admin + Glances + Dozzle), then starts Compose. A raw Hostinger `compose_url` pointed at [`overlays/docker-compose.kit.yml`](overlays/docker-compose.kit.yml) alone **will not work** (missing upstream services, build context, and secrets). We intentionally do **not** ship a broken one-click button for that reason.
+
+**One-liner on a fresh VPS** (Docker + Compose v2, git, openssl, Node 18+):
+
+```bash
+git clone https://github.com/blitzhash360-web/blitzhash-supabase-selfhost-kit.git \
+  && cd blitzhash-supabase-selfhost-kit \
+  && ./setup.sh -y --public-url "https://YOUR_DOMAIN_OR_IP"
+```
+
+Omit `--public-url` to keep the default `http://localhost:8000` (SSH tunnel / localhost binds). After setup, open Studio and the companion UIs printed by the script. Day-2: `./bin/blitzhash-supabase doctor`.
+
+**Hostinger:** create a VPS with [Docker Manager](https://www.hostinger.com/support/12040815-how-to-deploy-your-first-container-with-hostinger-docker-manager/), SSH in, run the one-liner above. When we publish a true single-file Compose artifact that is safe to one-click (without rebranding upstream Supabase), we will add a [Deploy on Hostinger](https://www.hostinger.com/support/deploy-on-hostinger-button/) button (`compose_url=` raw YAML). Until then, the VPS one-liner is the supported path.
+
+**Not for Railway/Render as this repo:** those platforms do not run Compose with `docker.sock` the way this kit needs. Prefer a VPS or a self-host panel. See BlitzHash growth notes for template platforms.
+
 ## What you get
 
 | Piece | What it is |
